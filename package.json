@@ -1,0 +1,24 @@
+{
+  "name": "hamsterwars",
+  "version": "1.0.0",
+  "description": "Hamster Wars labb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iths-jakob-gauffin/hamsterwars.git"
+  },
+  "author": "Jakob Gauffin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iths-jakob-gauffin/hamsterwars/issues"
+  },
+  "homepage": "https://github.com/iths-jakob-gauffin/hamsterwars#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "firebase-admin": "^8.12.0",
+    "helmet": "^3.22.0"
+  }
+}

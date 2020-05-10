@@ -14,6 +14,8 @@ const hamstersRoutes = require('./routes/hamstersRoute');
 
 const testRoute = require('./routes/testRoute');
 
+// const chartsRoutes = require('./routes/chartsRoutes');
+
 //Middleware
 app.use(express.json());
 app.use('/hamsters', hamstersRoutes);

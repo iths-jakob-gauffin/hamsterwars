@@ -3,6 +3,8 @@ const { db } = require('./../firebase');
 const { getSpecificHamster } = require('./getSpecificHamster');
 const { getAllGames } = require('./getAllGames');
 
+const moment = require('moment');
+
 const getNewIdNum = () => {
 	return new Promise(async (res, rej) => {
 		let highestNumber = 0;
@@ -49,7 +51,8 @@ const saveGame = async reqBody => {
 
 			let gameObj = {
 				id: idNum,
-				timeStamp: Date(),
+				timeStamp: moment(new Date()).format('llll'),
+				// timeStamp: Date(),
 				contestants: [
 					{
 						contestantOne: hamsterOne,

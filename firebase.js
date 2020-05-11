@@ -18,10 +18,12 @@ var serviceAccount = require('./serviceAccount.json');
 
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
-	databaseURL: 'https://hamster-wars-iths.firebaseio.com'
+	databaseURL: 'https://hamster-wars-iths.firebaseio.com',
+	storageBucket: 'hamster-wars-iths.appspot.com/'
 });
 // admin.
 
 const db = admin.firestore();
+const bucket = admin.storage().bucket();
 
-module.exports = { db };
+module.exports = { db, bucket };

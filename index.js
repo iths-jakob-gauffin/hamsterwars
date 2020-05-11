@@ -11,6 +11,8 @@ const { getDataIntoFirestore } = require('./uploadDataToFirestore');
 
 //Routes
 const hamstersRoutes = require('./routes/hamstersRoute');
+const chartsRoutes = require('./routes/chartsRoute');
+const gamesRoutes = require('./routes/gamesRoute');
 
 const testRoute = require('./routes/testRoute');
 
@@ -19,6 +21,8 @@ const testRoute = require('./routes/testRoute');
 //Middleware
 app.use(express.json());
 app.use('/hamsters', hamstersRoutes);
+app.use('/charts', chartsRoutes);
+app.use('/games', gamesRoutes);
 app.use('/test', testRoute);
 
 app.get('/', (req, res) => {

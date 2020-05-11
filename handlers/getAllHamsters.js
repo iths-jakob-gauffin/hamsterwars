@@ -1,4 +1,7 @@
 const { db } = require('../firebase');
+
+const { orderHamsterObject } = require('./orderHamsterObject');
+
 const getAllHamsters = async () => {
 	return new Promise(async (res, rej) => {
 		try {
@@ -8,7 +11,8 @@ const getAllHamsters = async () => {
 				.orderBy('id')
 				.get();
 			snapshot.forEach(doc => {
-				hamstersArray = [ ...hamstersArray, doc.data() ];
+				let orderedHamsterObject = orderHamsterObject(doc.data());
+				hamstersArray = [ ...hamstersArray, orderedHamsterObject ];
 			});
 			res(hamstersArray);
 		} catch (err) {

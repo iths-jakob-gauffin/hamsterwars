@@ -7,16 +7,11 @@ const getSpecificHamster = async id => {
 				.collection('hamsters')
 				.where('id', '==', id * 1)
 				.get();
-			snapshot.forEach(doc => {
+			snapshot.forEach(async doc => {
 				let unOrderedSpecificHamster = doc.data();
-				const specificHamster = {};
-				//TODO: kolla på den här, du kanske inte måste lägga den i en ny utan det kanske går redan efter sort-
-				Object.keys(unOrderedSpecificHamster)
-					.sort()
-					.forEach(function(key) {
-						specificHamster[key] =
-							unOrderedSpecificHamster[key];
-					});
+				let specificHamster = await orderHamsterObject(
+					unOrderedSpecificHamster
+				);
 				res(specificHamster);
 			});
 		} catch (err) {
@@ -24,4 +19,14 @@ const getSpecificHamster = async id => {
 		}
 	});
 };
+
+const orderHamsterObject = hamsterObject => {
+	const specificHamster = {};
+	//TODO: kolla på den här, du kanske inte måste lägga den i en ny utan det kanske går redan efter sort-
+	Object.keys(hamsterObject).sort().forEach(function(key) {
+		specificHamster[key] = hamsterObject[key];
+	});
+	return specificHamster;
+};
+
 exports.getSpecificHamster = getSpecificHamster;

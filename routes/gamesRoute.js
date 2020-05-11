@@ -3,9 +3,11 @@ const { Router } = require('express');
 const router = new Router();
 
 const { saveGame } = require('./../handlers/saveGame');
+const { getAllGames } = require('./../handlers/getAllGames');
 
-router.get('/', (req, res) => {
-	res.send('gamesget');
+router.get('/', async (req, res) => {
+	let allGames = await getAllGames();
+	res.send(allGames);
 });
 router.post('/', async (req, res) => {
 	let confirmation = await saveGame(req.body);

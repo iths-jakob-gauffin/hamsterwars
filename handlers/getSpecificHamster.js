@@ -1,32 +1,41 @@
+const { orderHamsterObject } = require('./orderHamsterObject');
+
 const { db } = require('../firebase');
 
 const getSpecificHamster = async id => {
 	return new Promise(async (res, rej) => {
+		// console.log('OUTPUT ÄR: getSpecificHamster -> ids', ids);
+		// let specificHamstersArray = [];
 		try {
+			// let resultArr = ids.map(async id => {
 			let snapshot = await db
 				.collection('hamsters')
 				.where('id', '==', id * 1)
 				.get();
-			snapshot.forEach(async doc => {
+			await snapshot.forEach(async doc => {
+				// console.log('DATAN: ', doc.data());
 				let unOrderedSpecificHamster = doc.data();
 				let specificHamster = await orderHamsterObject(
 					unOrderedSpecificHamster
 				);
 				res(specificHamster);
 			});
+			// });
+
+			// console.log(
+			// 	'OUTPUT ÄR: getSpecificHamster -> specificHamstersArray',
+			// 	specificHamstersArray
+			// );
+			// res(specificHamstersArray);
+			// console.log(
+			// 	'OUTPUT ÄR: getSpecificHamster -> resultArr',
+			// 	resultArr
+			// );
+			// res(resultArr);
 		} catch (err) {
 			rej(err);
 		}
 	});
-};
-
-const orderHamsterObject = hamsterObject => {
-	const specificHamster = {};
-	//TODO: kolla på den här, du kanske inte måste lägga den i en ny utan det kanske går redan efter sort-
-	Object.keys(hamsterObject).sort().forEach(function(key) {
-		specificHamster[key] = hamsterObject[key];
-	});
-	return specificHamster;
 };
 
 exports.getSpecificHamster = getSpecificHamster;

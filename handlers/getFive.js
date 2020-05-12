@@ -1,5 +1,4 @@
 const { getAllHamsters } = require('./getAllHamsters');
-// const { getRatio } = require("../routes/chartsRoute");
 
 const getRatio = async listOfHamsters => {
 	return new Promise(async (res, rej) => {

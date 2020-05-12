@@ -4,8 +4,6 @@ const { Router } = require('express');
 
 const router = new Router();
 
-const { db } = require('./../firebase');
-
 router.get('/top', async (req, res) => {
 	try {
 		const topFive = await getFive('top');

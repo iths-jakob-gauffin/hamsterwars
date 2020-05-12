@@ -24,6 +24,7 @@ admin.initializeApp({
 // admin.
 
 const db = admin.firestore();
-const bucket = admin.storage().bucket();
+// FICK INTE DENNA BUCKET ATT FUNKA, HAR DÄRFÖR ANVÄNT GOOGLE CLOUD STORAGE
+// const bucket = admin.storage().bucket('hamsterPics');
 
-module.exports = { db, bucket };
+module.exports = { db };

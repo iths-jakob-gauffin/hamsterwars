@@ -2,6 +2,7 @@ const { db } = require('./../firebase');
 
 const { orderHamsterObject } = require('./orderHamsterObject');
 
+///// Returnerar listan med alla matchobjekt.
 const getAllGames = async () => {
 	return new Promise(async (res, rej) => {
 		try {
@@ -11,7 +12,7 @@ const getAllGames = async () => {
 				let orderedGameObject = orderHamsterObject(doc.data());
 				allGamesArray = [ ...allGamesArray, orderedGameObject ];
 			});
-			// sortera arrayen desc, efter game-id:t så den senaste matchen hamnar längst upp i listan
+			// Sorterar arrayen desc, efter game-id:t så den senaste matchen hamnar längst upp i listan
 			allGamesArray = allGamesArray.sort((a, b) => b.id - a.id);
 			res(allGamesArray);
 		} catch (err) {

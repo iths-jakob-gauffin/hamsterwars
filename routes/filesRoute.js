@@ -3,20 +3,20 @@ const { Router } = require('express');
 const router = new Router();
 
 const path = require('path');
+
+// Handler-funktioner (promises).
 const { uploadFileToCloud } = require('./../handlers/uploadFileToCloud');
 const { getAllHamsters } = require('./../handlers/getAllHamsters');
 const { createNewHamster } = require('./../handlers/createNewHamster.js');
 
-// router.post('/', async (req, res) => {
-// 	let storageRef = bucket.ref(`hamster_pics/${req.files.photo.name}`);
-// 	// storageRef.put()
-// 	res('hittills');
-// });
+///// Första steget i att ladda upp en fil till google cloud storage till bucketen "hamster-bilder", som jag sen också addat in i min firebase storage. Så att filerna som laddas upp även syns i firebase storage.
 router.post('/cloud', async (req, res) => {
 	let fileExtension = path.extname(req.files.photo.name);
 	let allHamsters = await getAllHamsters();
 	let fileNameWithExtension = `hamster-${allHamsters.length * 1 +
 		1}${fileExtension}`;
+
+	// Kopierar filen tillfälligt till mappen "tempPathBeforeCloud".
 	req.files.photo.mv(
 		path.join(
 			__dirname,
@@ -28,17 +28,17 @@ router.post('/cloud', async (req, res) => {
 				res
 					.status(500)
 					.send(
-						'Something with the upload to google cloud went wrong'
+						'Something with the upload to folder "tempPathBeforeCloud" went wrong.'
 					);
 				return;
 			}
 		}
 	);
-	console.log(req.files.photo.name);
-	console.log(path.extname(req.files.photo.name));
+
+	// Anropar här nästa steg, där filen laddas upp till google cloud/firebase från tempPathBeforeCLoud-mappen. Detta görs pga att man måste skriva in filens sökväg innan den uploadas till molnet. Filen raderas sedan från mappen.
 	await uploadFileToCloud(fileNameWithExtension);
 
-	// Put the new hamster into db
+	// Lägger till den nya hamstern i db. Just nu skapas ett hamsterobjekt med id samt filnamn till bilden, andra uppgifter såsom namn och favoritmat tillkommer senare när jag jobbar med frontenden, eftersom klienten där får fylla i och göra sin egna hamster.
 	let newHamsterId = allHamsters.length + 1;
 	await createNewHamster(newHamsterId, fileNameWithExtension);
 
@@ -48,7 +48,8 @@ router.post('/cloud', async (req, res) => {
 	});
 	return;
 });
-// Uploada till egen mapp, "uploads"-mappen i public
+
+///// Uploadar bilden till public/uploads.
 router.post('/', async (req, res) => {
 	req.files.photo.mv(`./public/uploads/${req.files.photo.name}`, err => {
 		if (err) {
@@ -59,14 +60,5 @@ router.post('/', async (req, res) => {
 		return;
 	});
 });
-
-// var myHeaders = new Headers();
-// myHeaders.append("Authorization", "abc123");
-
-// var requestOptions = {
-//   method: 'GET',
-//   headers: myHeaders,
-//   redirect: 'follow'
-// };
 
 module.exports = router;

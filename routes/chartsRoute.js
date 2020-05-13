@@ -4,6 +4,8 @@ const { Router } = require('express');
 
 const router = new Router();
 
+///// Returnerar en lista med de fem hamstrar som har bäst "plus-minus-statistik". Detta returneras som en lista med fem hamsterobjekt, där "plus-minus-statistiken" är uträknad under propertyn "radio". Listan är i fallande ordning. Den mest vinnande hamstern är alltså längst upp.
+///// Exempel på fetch: localhost:7000/charts/top
 router.get('/top', async (req, res) => {
 	try {
 		const topFive = await getFive('top');
@@ -14,6 +16,8 @@ router.get('/top', async (req, res) => {
 	}
 });
 
+///// Samma som ovan men här får man de fem fem hamstrar som har sämst plus-minus-statistik. Listan är i fallande ordning, dvs den sista hamstern har förlorat mest.
+///// Exempel på fetch: localhost:7000/charts/bottom
 router.get('/bottom', async (req, res) => {
 	try {
 		const bottomFive = await getFive('bottom');

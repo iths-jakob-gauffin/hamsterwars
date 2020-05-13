@@ -2,6 +2,7 @@ const { db } = require('../firebase');
 
 const { orderHamsterObject } = require('./orderHamsterObject');
 
+///// Returnerar en lista med med alla hamsterobjekt i dbn. Innan den returneras, sorteras varje hamsterobjekt, utefter dess propertys alfabetiska ordning, efter att ha passerat funktiopen "orderHamsterObject".
 const getAllHamsters = async () => {
 	return new Promise(async (res, rej) => {
 		try {

@@ -1,5 +1,6 @@
 const { getAllHamsters } = require('./getAllHamsters');
 
+//// Räknar ut plus-minus-statistiken och skriver in den som en ny property: "ratio", på en tillfällig lista av alla hamstrar. Ratio-propertyn skrivs inte in i dbn. Den här tillfälliga listan sorteras efter ratiovärdet och returneras.
 const getRatio = async listOfHamsters => {
 	return new Promise(async (res, rej) => {
 		try {
@@ -16,6 +17,7 @@ const getRatio = async listOfHamsters => {
 	});
 };
 
+///// Returnerar en lista med de fem mest vinnande eller förlorande hamstrarna, beroende på vilken req.url det är i parametern "chartTopOrBottom".
 const getFive = async chartTopOrBottom => {
 	return new Promise(async (res, rej) => {
 		try {

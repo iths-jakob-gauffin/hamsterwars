@@ -12,7 +12,7 @@ const hamsterBucket = storage.bucket('hamster-bilder');
 const uploadFileToCloud = fileName => {
 	return new Promise(async (res, rej) => {
 		try {
-			console.log('inneiupload');
+			///// Ladda upp filen till google cloud storage och därmed firebase storage
 			await hamsterBucket.upload(
 				`./tempPathBeforeCloud/${fileName}`,
 				{
@@ -22,14 +22,12 @@ const uploadFileToCloud = fileName => {
 					}
 				}
 			);
-			console.log('File uploaded to cloud');
+
+			///// Radera filen ifrån tempPathBeforeCloud-mappen
 			await fs.unlink(`./tempPathBeforeCloud/${fileName}`, err => {
 				if (err) throw err;
 				return;
 			});
-			console.log(
-				`File: ${fileName} was removed from path: "./tempPathBeforeCloud/"`
-			);
 			res('Success');
 		} catch (err) {
 			console.error(err);

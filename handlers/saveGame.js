@@ -5,6 +5,7 @@ const { getAllGames } = require('./getAllGames');
 
 const moment = require('moment');
 
+// Den här funktionen kollar efter det högsta id-numret bland matchobjekten. Sen returneras ett unikt id genom att ta det högsta id-numret +1.
 const getNewIdNum = () => {
 	return new Promise(async (res, rej) => {
 		let highestNumber = 0;
@@ -18,7 +19,8 @@ const getNewIdNum = () => {
 	});
 };
 
-// TODO: Kan va värt att fixa så vinnaren får plus och förloraren minus och bägge får en ny game
+///// Sparar en ny match i dbn. Jag har valt att uppdatera wins/defeats/games med "localhost:7000/hamsters/:id/result". Men denna request görs från frontenden.
+
 const saveGame = async reqBody => {
 	return new Promise(async (res, rej) => {
 		try {
@@ -34,8 +36,10 @@ const saveGame = async reqBody => {
 					winningHamster
 				] = specificHamsters;
 
+				// Tar fram ett nytt id för matchen.
 				let idNum = await getNewIdNum();
 
+				// Matchobjekt skapas
 				let gameObj = {
 					id: idNum,
 					timeStamp: moment(new Date()).format('llll'),
@@ -47,7 +51,8 @@ const saveGame = async reqBody => {
 					],
 					winner: winningHamster
 				};
-				//TODO: kanske blir ett snapshot automatiskt och då anropar man db för mycket just nu med getAllGames varje gång
+
+				// Matchobjektet läggs till i dbn.
 				await db.collection('games').doc().set(gameObj);
 				let allGames = await getAllGames();
 				res(allGames);
@@ -57,62 +62,5 @@ const saveGame = async reqBody => {
 		}
 	});
 };
-// // TODO: Kan va värt att fixa så vinnaren får plus och förloraren minus och bägge får en ny game
-// const saveGame = async reqBody => {
-// 	return new Promise(async (res, rej) => {
-// 		try {
-// 			const { contestantOne, contestantTwo, winner } = reqBody;
-
-// 			let hamsterOne = await getSpecificHamster(contestantOne);
-// 			let hamsterTwo = await getSpecificHamster(contestantTwo);
-// 			let winningHamster = await getSpecificHamster(winner);
-// 			// let [
-// 			// 	hamsterOne,
-// 			// 	hamsterTwo,
-// 			// 	winningHamster
-// 			// ] = await getSpecificHamster(
-// 			// 	contestantOne,
-// 			// 	contestantTwo,
-// 			// 	winner
-// 			// );
-// 			// let resp = await getSpecificHamster(
-// 			// 	contestantOne,
-// 			// 	contestantTwo,
-// 			// 	winner
-// 			// );
-// 			// console.log('OUTPUT ÄR: resp', resp);
-// 			console.log('OUTPUT ÄR: hamsterOne', hamsterOne);
-// 			console.log('OUTPUT ÄR: hamsterTwo', hamsterTwo);
-// 			console.log('OUTPUT ÄR: winningHamster', winningHamster);
-// 			// if (err) throw err;
-
-// 			let idNum = await getNewIdNum();
-
-// 			let gameObj = {
-// 				id: idNum,
-// 				timeStamp: moment(new Date()).format('llll'),
-// 				// timeStamp: Date(),
-// 				contestants: [
-// 					{
-// 						contestantOne: hamsterOne,
-// 						constestantTwo: hamsterTwo
-// 					}
-// 				],
-// 				winner: winningHamster
-// 			};
-// 			//TODO: kanske blir ett snapshot automatiskt och då anropar man db för mycket just nu med getAllGames varje gång
-// 			await db.collection('games').doc().set(gameObj);
-// 			let allGames = await getAllGames();
-// 			res(allGames);
-// 			// let snapshot = db.collection('games').get();
-// 			// snapshot.forEach(doc => {
-// 			// 	console.log(doc.data());
-// 			// 	res('game saved');
-// 			// });
-// 		} catch (err) {
-// 			rej(err);
-// 		}
-// 	});
-// };
 
 module.exports = { saveGame };

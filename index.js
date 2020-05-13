@@ -60,6 +60,6 @@ app.use(function(e, req, res, next) {
 });
 ///////////////////////
 
-app.listen(7000, () => {
+app.listen(3000, () => {
 	console.log('Server is running on port 3000');
 });

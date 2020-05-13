@@ -48,7 +48,7 @@ router.post('/cloud', async (req, res) => {
 	});
 	return;
 });
-// DENNA NEDAN FUNKAR
+// Uploada till egen mapp, "uploads"-mappen i public
 router.post('/', async (req, res) => {
 	req.files.photo.mv(`./public/uploads/${req.files.photo.name}`, err => {
 		if (err) {
@@ -59,5 +59,14 @@ router.post('/', async (req, res) => {
 		return;
 	});
 });
+
+// var myHeaders = new Headers();
+// myHeaders.append("Authorization", "abc123");
+
+// var requestOptions = {
+//   method: 'GET',
+//   headers: myHeaders,
+//   redirect: 'follow'
+// };
 
 module.exports = router;

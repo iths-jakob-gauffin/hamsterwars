@@ -10,8 +10,6 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
+const fbStorage = admin.storage();
 
-// FICK INTE DENNA BUCKET ATT FUNKA, HAR DÄRFÖR ANVÄNT GOOGLE CLOUD STORAGE, SEDAN HAR JAG ADDAT SAMMA BUCKET I FIREBASE STORAGE(MANUELLT I FIREBASE-CONSOLEN). ALLT SOM FINNS I GOOGLE CLOUD STORAGE FINNS ALLTSÅ OCKSÅ I FIREBASE STORAGE.
-// const bucket = admin.storage().bucket('hamster-bilder');
-
-module.exports = { db };
+module.exports = { db, fbStorage };

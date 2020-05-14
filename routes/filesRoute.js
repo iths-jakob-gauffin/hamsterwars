@@ -44,7 +44,7 @@ router.post('/cloud', async (req, res) => {
 
 	res.status(200).send({
 		msg: `File uploaded to cloud and new hamster created in Firestore`,
-		urlToImage: `https://storage.cloud.google.com/hamster-bilder/${fileNameWithExtension}`
+		urlToImageOnGoogleCloud: `https://storage.cloud.google.com/hamster-bilder/${fileNameWithExtension}`
 	});
 	return;
 });

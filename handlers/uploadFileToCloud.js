@@ -1,13 +1,14 @@
 const fs = require('fs');
-const path = require('path');
-const { Storage } = require('@google-cloud/storage');
+const { hamsterBucket } = require('./../googleStorage');
+// const path = require('path');
+// const { Storage } = require('@google-cloud/storage');
 
-const storage = new Storage({
-	keyFilename: path.join(__dirname, './../serviceAccount.json'),
-	projectId: 'hamster-wars-iths'
-});
+// const storage = new Storage({
+// 	keyFilename: path.join(__dirname, './../serviceAccount.json'),
+// 	projectId: 'hamster-wars-iths'
+// });
 
-const hamsterBucket = storage.bucket('hamster-bilder');
+// const hamsterBucket = storage.bucket('hamster-bilder');
 
 const uploadFileToCloud = fileName => {
 	return new Promise(async (res, rej) => {

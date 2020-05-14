@@ -6,29 +6,28 @@ const helmet = require('helmet');
 
 const app = express();
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 ///// Få in hamsterdatan (data.json) i firestore, anropar därför denna funktion endast en gång. Jag skickar med den trots funktionen inte anropas.
 const data = require('./data.json');
 const { getDataIntoFirestore } = require('./uploadDataToFirestore');
 ///// Initera databasen
 // getDataIntoFirestore(data);
 
-///// Läs in API-nyckel
-const apiKey = require('./apiKey');
-
-//Middleware
+///// Middleware
 app.use(express.json());
 app.use(fileUpload());
 app.use(helmet());
-app.use(express.static('hamsters'));
 app.use(express.static('public'));
 
-///// Kontrollera om API-nyckeln stämmer (api-nyckeln är "abc123").
+///// Kontrollera om API-nyckeln stämmer med KEY i .dotenv-dokumentet.
 app.use((req, res, next) => {
-	if (req.headers['authorization'] === apiKey) {
+	if (req.headers['authorization'] === process.env.key) {
 		next();
 	} else {
 		res.status(401).send({
-			Error: `API-nyckeln stämmer inte. Nyckeln finns i roten i modulen 'apiKey.js'.`
+			Error: `API-nyckeln saknas/stämmer inte. Nyckeln finns i .env-dokumentet under propertyn 'KEY'.`
 		});
 	}
 });
@@ -39,7 +38,11 @@ const chartsRoutes = require('./routes/chartsRoute');
 const gamesRoutes = require('./routes/gamesRoute');
 const statsRoutes = require('./routes/statsRoute');
 const filesRoutes = require('./routes/filesRoute');
+const assetsRoutes = require('./routes/assetsRoute');
 
+///// Denna är när jag vill serva bilderna direkt ifrån mappen på resursen /assets. Men eftersom jag använder firebase storage så har jag avmarkerat denna kodrad
+// app.use('/assets', express.static('hamsters'));
+app.use('/assets', assetsRoutes);
 app.use('/hamsters', hamstersRoutes);
 app.use('/charts', chartsRoutes);
 app.use('/games', gamesRoutes);

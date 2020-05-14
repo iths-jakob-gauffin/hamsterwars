@@ -9,7 +9,7 @@ const { uploadFileToCloud } = require('./../handlers/uploadFileToCloud');
 const { getAllHamsters } = require('./../handlers/getAllHamsters');
 const { createNewHamster } = require('./../handlers/createNewHamster.js');
 
-///// Första steget i att ladda upp en fil till google cloud storage till bucketen "hamster-bilder", som jag sen också addat in i min firebase storage. Så att filerna som laddas upp även syns i firebase storage.
+///// Första steget i att ladda upp en fil till bucketen "hamster-bilder" i min firebase storage. Jag tar ut filnamn och filtyp på det som ska laddas upp.
 router.post('/cloud', async (req, res) => {
 	let fileExtension = path.extname(req.files.photo.name);
 	let allHamsters = await getAllHamsters();

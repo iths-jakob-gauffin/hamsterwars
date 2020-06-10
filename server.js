@@ -6,6 +6,8 @@ const helmet = require('helmet');
 
 const app = express();
 
+var cors = require('cors');
+
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -19,18 +21,30 @@ const { getDataIntoFirestore } = require('./uploadDataToFirestore');
 app.use(express.json());
 app.use(fileUpload());
 app.use(helmet());
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/../build'));
+app.use(cors());
 
 ///// Kontrollera om API-nyckeln stämmer med KEY i .dotenv-dokumentet.
-app.use((req, res, next) => {
-	if (req.headers['authorization'] === process.env.key) {
-		next();
-	} else {
-		res.status(401).send({
-			Error: `API-nyckeln saknas/stämmer inte. Nyckeln finns i .env-dokumentet under propertyn 'KEY'.`
-		});
-	}
-});
+// app.use((req, res, next) => {
+// 	if (req.headers['authorization'] === process.env.key) {
+// 		next();
+// 	} else {
+// 		res.status(401).send({
+// 			Error: `API-nyckeln saknas/stämmer inte. Nyckeln finns i .env-dokumentet under propertyn 'KEY'.`
+// 		});
+// 	}
+// });
+
+// app.use(function(req, res, next) {
+// 	res.header('Access-Control-Allow-Origin', '*');
+
+// 	res.header(
+// 		'Access-Control-Allow-Headers',
+// 		'Origin, X-Requested-With, Content-Type, Accept'
+// 	);
+
+// 	next();
+// });
 
 //Routes
 const hamstersRoutes = require('./routes/hamstersRoute');
@@ -42,12 +56,12 @@ const assetsRoutes = require('./routes/assetsRoute');
 
 ///// Denna är när jag vill serva bilderna direkt ifrån mappen på resursen /assets. Men eftersom jag använder firebase storage så har jag avmarkerat denna kodrad
 // app.use('/assets', express.static('hamsters'));
-app.use('/assets', assetsRoutes);
-app.use('/hamsters', hamstersRoutes);
-app.use('/charts', chartsRoutes);
-app.use('/games', gamesRoutes);
-app.use('/stats', statsRoutes);
-app.use('/files', filesRoutes);
+app.use('/api/assets', assetsRoutes);
+app.use('/api/hamsters', hamstersRoutes);
+app.use('/api/charts', chartsRoutes);
+app.use('/api/games', gamesRoutes);
+app.use('/api/stats', statsRoutes);
+app.use('/api/files', filesRoutes);
 
 ///// Om en felaktig resurs anges i req.url ges ett felmeddelande och en 404. Detta kodstycke har jag copypejstat in från stackoverflow.
 app.all('*', function(req, res) {
@@ -63,6 +77,8 @@ app.use(function(e, req, res, next) {
 });
 ///////////////////////
 
-app.listen(7000, () => {
-	console.log('Server is running on port 7000');
+const serverPort = process.env.PORT || 1234;
+
+app.listen(serverPort, () => {
+	console.log(`Server is running on port ${serverPort}`);
 });
